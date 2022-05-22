@@ -1,10 +1,9 @@
 package me.dyatkokg.artefactapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.dyatkokg.artefactapi.dto.ArtefactDTO;
-import me.dyatkokg.artefactapi.dto.ArtefactMetadataDTO;
-import me.dyatkokg.artefactapi.dto.ArtefactSearchDTO;
-import me.dyatkokg.artefactapi.entity.Artefact;
+import me.dyatkokg.artefactapi.dto.ArtifactDTO;
+import me.dyatkokg.artefactapi.dto.ArtifactMetadataDTO;
+import me.dyatkokg.artefactapi.dto.ArtifactSearchDTO;
 import me.dyatkokg.artefactapi.service.ArtefactService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +15,17 @@ import java.util.UUID;
 @RestController
 @RequestMapping("artefact")
 @RequiredArgsConstructor
-public class ArtefactController {
+public class ArtifactController {
 
     private final ArtefactService service;
 
     @PostMapping("update")
-    public ResponseEntity<ArtefactDTO> addArtefact(@RequestParam("file") MultipartFile file, @RequestParam("metadata") ArtefactMetadataDTO metadataDTO) {
+    public ResponseEntity<ArtifactDTO> addArtefact(@RequestParam("file") MultipartFile file, @RequestParam("metadata") ArtifactMetadataDTO metadataDTO) {
         return ResponseEntity.ok(service.update(file, metadataDTO));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ArtefactDTO> findById(@PathVariable("id") UUID id) {
+    public ResponseEntity<ArtifactDTO> findById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(service.getById(id));
     }
 
@@ -36,7 +35,7 @@ public class ArtefactController {
     }
 
     @PostMapping("find")
-    public ResponseEntity<List<ArtefactDTO>> findBy(@RequestBody ArtefactSearchDTO searchDTO) {
+    public ResponseEntity<List<ArtifactDTO>> findBy(@RequestBody ArtifactSearchDTO searchDTO) {
         return ResponseEntity.ok(service.searchByField(searchDTO));
     }
 

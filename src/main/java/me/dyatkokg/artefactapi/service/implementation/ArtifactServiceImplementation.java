@@ -2,12 +2,13 @@ package me.dyatkokg.artefactapi.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import me.dyatkokg.artefactapi.dto.ArtefactDTO;
-import me.dyatkokg.artefactapi.dto.ArtefactMetadataDTO;
-import me.dyatkokg.artefactapi.dto.ArtefactSearchDTO;
-import me.dyatkokg.artefactapi.entity.Artefact;
-import me.dyatkokg.artefactapi.mapper.ArtefactMapper;
-import me.dyatkokg.artefactapi.repository.ArtefactRepository;
+import me.dyatkokg.artefactapi.dto.ArtifactDTO;
+import me.dyatkokg.artefactapi.dto.ArtifactMetadataDTO;
+import me.dyatkokg.artefactapi.dto.ArtifactSearchDTO;
+import me.dyatkokg.artefactapi.entity.Artifact;
+import me.dyatkokg.artefactapi.exception.ArtifactNotFoundException;
+import me.dyatkokg.artefactapi.mapper.ArtifactMapper;
+import me.dyatkokg.artefactapi.repository.ArtifactRepository;
 import me.dyatkokg.artefactapi.service.ArtefactService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,25 +22,25 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ArtefactServiceImplementation implements ArtefactService {
+public class ArtifactServiceImplementation implements ArtefactService {
 
-    private final ArtefactRepository repository;
-    private final ArtefactMapper mapper;
+    private final ArtifactRepository repository;
+    private final ArtifactMapper mapper;
 
     @Override
     @SneakyThrows
-    public ArtefactDTO update(MultipartFile file, ArtefactMetadataDTO metadataDTO) {
+    public ArtifactDTO update(MultipartFile file, ArtifactMetadataDTO metadataDTO) {
         byte[] bytes = file.getBytes();
-        Artefact artefact = mapper.toEntityFromMetadata(metadataDTO);
-        artefact.setArtefact(bytes);
-        artefact.setCreated(LocalDateTime.now());
-        artefact = repository.save(artefact);
-        return mapper.toDTO(artefact);
+        Artifact artifact = mapper.toEntityFromMetadata(metadataDTO);
+        artifact.setArtefact(bytes);
+        artifact.setCreated(LocalDateTime.now());
+        artifact = repository.save(artifact);
+        return mapper.toDTO(artifact);
     }
 
     @Override
-    public ArtefactDTO getById(UUID id) {
-        return repository.findById(id).map(mapper::toDTO).orElseThrow();
+    public ArtifactDTO getById(UUID id) {
+        return repository.findById(id).map(mapper::toDTO).orElseThrow(ArtifactNotFoundException::new);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ArtefactServiceImplementation implements ArtefactService {
     }
 
     @Override
-    public List<ArtefactDTO> searchByField(ArtefactSearchDTO searchDTO) {
+    public List<ArtifactDTO> searchByField(ArtifactSearchDTO searchDTO) {
         if (Objects.nonNull(searchDTO.getCategory())) {
             return repository.findByCategory(searchDTO.getCategory()).stream().map(mapper::toDTO).collect(Collectors.toList());
         } else if (Objects.nonNull(searchDTO.getUserId())) {

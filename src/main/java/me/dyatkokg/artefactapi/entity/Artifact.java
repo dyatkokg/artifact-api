@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Artefact {
+public class Artifact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

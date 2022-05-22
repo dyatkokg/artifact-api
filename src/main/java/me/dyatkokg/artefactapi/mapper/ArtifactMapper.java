@@ -1,13 +1,13 @@
 package me.dyatkokg.artefactapi.mapper;
 
-import me.dyatkokg.artefactapi.dto.ArtefactDTO;
-import me.dyatkokg.artefactapi.dto.ArtefactMetadataDTO;
-import me.dyatkokg.artefactapi.entity.Artefact;
+import me.dyatkokg.artefactapi.dto.ArtifactDTO;
+import me.dyatkokg.artefactapi.dto.ArtifactMetadataDTO;
+import me.dyatkokg.artefactapi.entity.Artifact;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface ArtefactMapper {
+public interface ArtifactMapper {
 
     @Mapping(source = "category" ,target = "category")
     @Mapping(source = "description" ,target = "description")
@@ -15,7 +15,7 @@ public interface ArtefactMapper {
     @Mapping(target = "created" ,ignore = true)
     @Mapping(target = "userId" ,ignore = true)
     @Mapping(target = "artefact" ,ignore = true)
-    Artefact toEntityFromMetadata(ArtefactMetadataDTO metadataDTO);
+    Artifact toEntityFromMetadata(ArtifactMetadataDTO metadataDTO);
 
-    ArtefactDTO toDTO(Artefact artefact);
+    ArtifactDTO toDTO(Artifact artefact);
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import me.dyatkokg.artefactapi.dto.ArtefactDTO;
 import me.dyatkokg.artefactapi.dto.ArtefactMetadataDTO;
+import me.dyatkokg.artefactapi.dto.ArtefactSearchDTO;
 import me.dyatkokg.artefactapi.entity.Artefact;
 import me.dyatkokg.artefactapi.mapper.ArtefactMapper;
 import me.dyatkokg.artefactapi.repository.ArtefactRepository;
@@ -11,10 +12,12 @@ import me.dyatkokg.artefactapi.service.ArtefactService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,11 +44,17 @@ public class ArtefactServiceImplementation implements ArtefactService {
 
     @Override
     public void deleteById(UUID id) {
-
+        repository.deleteById(id);
     }
 
     @Override
-    public List<Artefact> searchByField(Artefact artefact) {
-        return null;
+    public List<ArtefactDTO> searchByField(ArtefactSearchDTO searchDTO) {
+        if (Objects.nonNull(searchDTO.getCategory())) {
+            return repository.findByCategory(searchDTO.getCategory()).stream().map(mapper::toDTO).collect(Collectors.toList());
+        } else if (Objects.nonNull(searchDTO.getUserId())) {
+            return repository.findByUserId(searchDTO.getUserId().getId()).stream().map(mapper::toDTO).collect(Collectors.toList());
+        } else if (Objects.nonNull(searchDTO.getDescription())) {
+            return repository.findByDescriptionContains(searchDTO.getDescription()).stream().map(mapper::toDTO).collect(Collectors.toList());
+        } else return new ArrayList<>();
     }
 }

@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class User {
 
     @Id

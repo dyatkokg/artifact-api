@@ -17,10 +17,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Artefact artefactId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User userId;
 
     private String content;

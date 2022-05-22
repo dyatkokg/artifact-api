@@ -20,7 +20,7 @@ public class Artefact {
 
     private LocalDateTime created;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User userId;
 
     private String category;

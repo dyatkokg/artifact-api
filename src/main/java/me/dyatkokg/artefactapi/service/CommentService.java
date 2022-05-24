@@ -1,9 +1,8 @@
 package me.dyatkokg.artefactapi.service;
 
-import me.dyatkokg.artefactapi.entity.Comment;
-import org.springframework.http.ResponseEntity;
+import me.dyatkokg.artefactapi.dto.CommentDTO;
 
 public interface CommentService {
 
-    Comment addComment(Comment comment);
+    CommentDTO addComment(CommentDTO comment);
 }

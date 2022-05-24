@@ -21,7 +21,7 @@ public class Artifact {
     private LocalDateTime created;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private User userId;
+    private User user;
 
     private String category;
 

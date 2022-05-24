@@ -1,27 +1,24 @@
-package me.dyatkokg.artefactapi.entity;
+package me.dyatkokg.artefactapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.dyatkokg.artefactapi.entity.Artifact;
+import me.dyatkokg.artefactapi.entity.User;
 
-import javax.persistence.*;
 import java.util.UUID;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class CommentDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private Artifact artifact;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     private String content;
+
 }

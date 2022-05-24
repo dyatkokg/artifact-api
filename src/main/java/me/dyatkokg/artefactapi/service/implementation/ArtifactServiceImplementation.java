@@ -10,6 +10,8 @@ import me.dyatkokg.artefactapi.exception.ArtifactNotFoundException;
 import me.dyatkokg.artefactapi.mapper.ArtifactMapper;
 import me.dyatkokg.artefactapi.repository.ArtifactRepository;
 import me.dyatkokg.artefactapi.service.ArtefactService;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,4 +60,13 @@ public class ArtifactServiceImplementation implements ArtefactService {
             return repository.findByDescriptionContains(searchDTO.getDescription()).stream().map(mapper::toDTO).collect(Collectors.toList());
         } else return new ArrayList<>();
     }
+
+//    @EventListener
+//    public void onApplicationReady(ApplicationReadyEvent event){
+//       Artifact artifact =new Artifact();
+//       artifact.setCategory("пизда");
+//       artifact.setDescription("что то на белоруском");
+//       artifact.setCreated(LocalDateTime.now());
+//       repository.save(artifact);
+//    }
 }

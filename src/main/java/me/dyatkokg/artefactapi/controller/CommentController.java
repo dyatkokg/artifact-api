@@ -1,6 +1,7 @@
 package me.dyatkokg.artefactapi.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.dyatkokg.artefactapi.dto.CommentDTO;
 import me.dyatkokg.artefactapi.entity.Comment;
 import me.dyatkokg.artefactapi.service.CommentService;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CommentController {
     private final CommentService service;
 
     @PostMapping("add")
-    public ResponseEntity<?> addComment(@RequestBody Comment comment){
+    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO comment){
         return ResponseEntity.ok(service.addComment(comment));
     }
 

@@ -13,7 +13,7 @@ public interface ArtifactMapper {
     @Mapping(source = "description" ,target = "description")
     @Mapping(target = "id" ,ignore = true)
     @Mapping(target = "created" ,ignore = true)
-    @Mapping(target = "userId" ,ignore = true)
+    @Mapping(target = "user" ,ignore = true)
     @Mapping(target = "artefact" ,ignore = true)
     Artifact toEntityFromMetadata(ArtifactMetadataDTO metadataDTO);
 

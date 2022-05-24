@@ -18,3 +18,5 @@ spring:
       ddl-auto: update
 server:
   port: 8080
+token:
+  signature: YLZAk75mwyQdbdcki8f7eSWeJs9GU39apM0sYKDCMpnqk8O0suDUH1poZuQSL9lYLviV9ZEEh4wB3fPzz61CRpuuxx7tVvmcG47HvvSDISGuMHuDFwsl8mkrOQgZ0blOXRRxVrK9f8jjkfPDQjRamimP3AGlQbHfXNY3inGZrmZNI1Xed2ATDK2RSDEPvXvYc2qIakot

@@ -3,7 +3,9 @@ package me.dyatkokg.artefactapi.service.implementation;
 import lombok.RequiredArgsConstructor;
 import me.dyatkokg.artefactapi.dto.LoginDTO;
 import me.dyatkokg.artefactapi.entity.User;
+import me.dyatkokg.artefactapi.exception.PasswordInvalidException;
 import me.dyatkokg.artefactapi.exception.UserAlreadyExistException;
+import me.dyatkokg.artefactapi.exception.UserNotFoundException;
 import me.dyatkokg.artefactapi.repository.UserRepository;
 import me.dyatkokg.artefactapi.service.TokenProvider;
 import me.dyatkokg.artefactapi.service.UserService;
@@ -18,6 +20,7 @@ public class UserServiceImplementation implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final TokenProvider provider;
 
     @Override
     public User register(LoginDTO user) {
@@ -36,6 +39,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public String login(LoginDTO login) {
-        return null;
+        User user = repository.findByUsername(login.getUsername()).orElseThrow(UserNotFoundException::new);
+        boolean isPasswordValid = passwordEncoder.matches(login.getPassword(), user.getPassword());
+        if (isPasswordValid) {
+            return provider.generateToken(user);
+        } else {
+            throw new PasswordInvalidException();
+        }
     }
 }

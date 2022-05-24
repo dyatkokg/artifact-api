@@ -6,4 +6,8 @@ public interface TokenProvider {
 
     String generateToken(User user);
 
+    void  validateToken(String token);
+
+    String getSubject(String token);
+
 }

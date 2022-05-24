@@ -9,7 +9,6 @@ import me.dyatkokg.artefactapi.exception.UserNotFoundException;
 import me.dyatkokg.artefactapi.repository.UserRepository;
 import me.dyatkokg.artefactapi.service.TokenProvider;
 import me.dyatkokg.artefactapi.service.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

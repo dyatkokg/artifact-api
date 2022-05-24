@@ -2,6 +2,9 @@ package me.dyatkokg.artefactapi.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
+import me.dyatkokg.artefactapi.configuration.filter.FilterUtils;
 import me.dyatkokg.artefactapi.dto.ArtifactDTO;
 import me.dyatkokg.artefactapi.dto.ArtifactMetadataDTO;
 import me.dyatkokg.artefactapi.dto.ArtifactSearchDTO;
@@ -10,6 +13,7 @@ import me.dyatkokg.artefactapi.exception.ArtifactNotFoundException;
 import me.dyatkokg.artefactapi.mapper.ArtifactMapper;
 import me.dyatkokg.artefactapi.repository.ArtifactRepository;
 import me.dyatkokg.artefactapi.service.ArtefactService;
+import me.dyatkokg.artefactapi.service.TokenProvider;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -24,10 +28,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ArtifactServiceImplementation implements ArtefactService {
 
     private final ArtifactRepository repository;
     private final ArtifactMapper mapper;
+
+    private final TokenProvider provider;
 
     @Override
     @SneakyThrows
@@ -35,6 +42,11 @@ public class ArtifactServiceImplementation implements ArtefactService {
         byte[] bytes = file.getBytes();
         Artifact artifact = mapper.toEntityFromMetadata(metadataDTO);
         artifact.setArtefact(bytes);
+        val subject = provider.getSubject(FilterUtils.getTokenFromSecurityContext());
+        log.info("{}",subject);
+        val uuid = UUID.fromString(subject);
+        log.info("{}",uuid);
+        artifact.getUser().setId(uuid);
         artifact.setCreated(LocalDateTime.now());
         artifact = repository.save(artifact);
         return mapper.toDTO(artifact);
@@ -55,18 +67,11 @@ public class ArtifactServiceImplementation implements ArtefactService {
         if (Objects.nonNull(searchDTO.getCategory())) {
             return repository.findByCategory(searchDTO.getCategory()).stream().map(mapper::toDTO).collect(Collectors.toList());
         } else if (Objects.nonNull(searchDTO.getUserId())) {
-            return repository.findByUserId(searchDTO.getUserId().getId()).stream().map(mapper::toDTO).collect(Collectors.toList());
+            return repository.findByUserId(UUID.fromString(provider.getSubject(FilterUtils.getTokenFromSecurityContext()))).stream().map(mapper::toDTO).collect(Collectors.toList());
+//            return repository.findByUserId(searchDTO.getUserId().getId()).stream().map(mapper::toDTO).collect(Collectors.toList());
         } else if (Objects.nonNull(searchDTO.getDescription())) {
             return repository.findByDescriptionContains(searchDTO.getDescription()).stream().map(mapper::toDTO).collect(Collectors.toList());
         } else return new ArrayList<>();
     }
 
-//    @EventListener
-//    public void onApplicationReady(ApplicationReadyEvent event){
-//       Artifact artifact =new Artifact();
-//       artifact.setCategory("пизда");
-//       artifact.setDescription("что то на белоруском");
-//       artifact.setCreated(LocalDateTime.now());
-//       repository.save(artifact);
-//    }
 }

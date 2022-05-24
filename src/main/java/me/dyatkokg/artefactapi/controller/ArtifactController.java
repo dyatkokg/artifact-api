@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("artefact")
+@RequestMapping("artifact")
 @RequiredArgsConstructor
 public class ArtifactController {
 

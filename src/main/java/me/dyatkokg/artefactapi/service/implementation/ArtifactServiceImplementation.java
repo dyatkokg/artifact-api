@@ -40,13 +40,19 @@ public class ArtifactServiceImplementation implements ArtefactService {
     @SneakyThrows
     public ArtifactDTO update(MultipartFile file, ArtifactMetadataDTO metadataDTO) {
         byte[] bytes = file.getBytes();
-        Artifact artifact = mapper.toEntityFromMetadata(metadataDTO);
-        artifact.setArtefact(bytes);
-        Optional<User> byId = userRepository.findById(UUID.fromString(provider.getSubject(FilterUtils.getTokenFromSecurityContext())));
-        artifact.setUser(byId.orElseThrow(UserNotFoundException::new));
-        artifact.setCreated(LocalDateTime.now());
-        artifact = repository.save(artifact);
-        return mapper.toDTO(artifact);
+        Artifact artifact;
+        if (Objects.nonNull(metadataDTO.getUserId())) {
+            artifact = repository.findById(metadataDTO.getUserId()).orElseThrow(ArtifactNotFoundException::new);
+            artifact.setCategory(metadataDTO.getCategory());
+            artifact.setDescription(metadataDTO.getDescription());
+        } else {
+            artifact = mapper.toEntityFromMetadata(metadataDTO);
+            artifact.setCreated(LocalDateTime.now());
+            artifact.setArtefact(bytes);
+            Optional<User> byId = userRepository.findById(UUID.fromString(provider.getSubject(FilterUtils.getTokenFromSecurityContext())));
+            artifact.setUser(byId.orElseThrow(UserNotFoundException::new));
+        }
+        return mapper.toDTO(repository.save(artifact));
     }
 
     @Override

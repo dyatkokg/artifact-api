@@ -20,7 +20,7 @@ public class ArtifactController {
 
     private final ArtefactService service;
 
-    @PostMapping(value = "/update",
+    @PostMapping(value = "update",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ArtifactDTO> addArtefact(@RequestPart("file") MultipartFile file, @RequestPart("metadata") ArtifactMetadataDTO metadataDTO) {
@@ -32,7 +32,7 @@ public class ArtifactController {
         return ResponseEntity.ok(service.getById(id));
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("{id}")
     public void deleteById(@PathVariable("id") UUID id) {
         service.deleteById(id);
     }

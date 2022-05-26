@@ -10,7 +10,7 @@ import me.dyatkokg.artefactapi.entity.User;
 @NoArgsConstructor
 public class ArtifactSearchDTO {
 
-    private User userId;
+    private String userId;
 
     private String category;
 

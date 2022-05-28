@@ -5,6 +5,7 @@ import me.dyatkokg.artefactapi.dto.ArtifactDTO;
 import me.dyatkokg.artefactapi.dto.ArtifactMetadataDTO;
 import me.dyatkokg.artefactapi.dto.ArtifactSearchDTO;
 import me.dyatkokg.artefactapi.service.ArtefactService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +39,9 @@ public class ArtifactController {
     }
 
     @PostMapping("find")
-    public ResponseEntity<List<ArtifactDTO>> findBy(@RequestBody ArtifactSearchDTO searchDTO) {
+    public ResponseEntity<Page<ArtifactDTO>> findBy(@RequestBody ArtifactSearchDTO searchDTO) {
         return ResponseEntity.ok(service.searchByField(searchDTO));
     }
+
 
 }

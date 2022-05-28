@@ -16,6 +16,10 @@ import me.dyatkokg.artefactapi.repository.ArtifactRepository;
 import me.dyatkokg.artefactapi.repository.UserRepository;
 import me.dyatkokg.artefactapi.service.ArtefactService;
 import me.dyatkokg.artefactapi.service.TokenProvider;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,14 +70,25 @@ public class ArtifactServiceImplementation implements ArtefactService {
     }
 
     @Override
-    public List<ArtifactDTO> searchByField(ArtifactSearchDTO searchDTO) {
-        if (Objects.nonNull(searchDTO.getCategory())) {
-            return repository.findByCategory(searchDTO.getCategory()).stream().map(mapper::toDTO).collect(Collectors.toList());
-        } else if (Objects.nonNull(searchDTO.getUserId())) {
-            return repository.findByUserId(UUID.fromString(searchDTO.getUserId())).stream().map(mapper::toDTO).collect(Collectors.toList());
-        } else if (Objects.nonNull(searchDTO.getDescription())) {
-            return repository.findByDescriptionContains(searchDTO.getDescription()).stream().map(mapper::toDTO).collect(Collectors.toList());
-        } else return new ArrayList<>();
+    public Page<ArtifactDTO> searchByField(ArtifactSearchDTO searchDTO) {
+        List<ArtifactSearchDTO.OrderDTO> orderDTO = searchDTO.getOrderDTO();
+        List<Sort.Order> orders = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 100, Sort.by(orders));
+        for (ArtifactSearchDTO.OrderDTO order : orderDTO) {
+            orders.add(new Sort.Order(Sort.Direction.fromString(order.getDirection()), order.getField()));
+        }
+        if (Objects.nonNull(searchDTO.getSearch().getCategory())) {
+            return repository.findByCategory(searchDTO.getSearch().getCategory(), pageable).map(mapper::toDTO);
+        } else if (Objects.nonNull(searchDTO.getSearch().getUserId())) {
+            return repository.findByUserId(UUID.fromString(searchDTO.getSearch().getUserId()), pageable).map(mapper::toDTO);
+        } else if (Objects.nonNull(searchDTO.getSearch().getDescription())) {
+            return repository.findByDescriptionContains(searchDTO.getSearch().getDescription(), pageable).map(mapper::toDTO);
+        }else if (Objects.nonNull(searchDTO.getSearch().getComment())){
+            return repository.findByCommentContains(searchDTO.getSearch().getComment(),pageable).map(mapper::toDTO);
+        }
+        return repository.findAll(pageable).map(mapper::toDTO);
+
+
     }
 
 }

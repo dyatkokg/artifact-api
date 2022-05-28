@@ -15,7 +15,7 @@ public class CommentDTO {
 
     private UUID id;
 
-    private Artifact artifact;
+    private String artifactId;
 
     private User user;
 

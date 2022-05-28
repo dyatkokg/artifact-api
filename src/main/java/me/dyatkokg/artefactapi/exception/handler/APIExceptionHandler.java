@@ -1,10 +1,7 @@
 package me.dyatkokg.artefactapi.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import me.dyatkokg.artefactapi.exception.ArtifactNotFoundException;
-import me.dyatkokg.artefactapi.exception.PasswordInvalidException;
-import me.dyatkokg.artefactapi.exception.UserAlreadyExistException;
-import me.dyatkokg.artefactapi.exception.UserNotFoundException;
+import me.dyatkokg.artefactapi.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,5 +32,11 @@ public class APIExceptionHandler {
     public ResponseEntity<Object> handleUserExist(UserAlreadyExistException exception) {
         log.error(exception.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User with this username already exists");
+    }
+
+    @ExceptionHandler({CommentNotFoundException.class})
+    public ResponseEntity<Object> handleCommentNotFound(CommentNotFoundException exception) {
+        log.error(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT.ordinal()).body("Comment was not found. Try again!");
     }
 }

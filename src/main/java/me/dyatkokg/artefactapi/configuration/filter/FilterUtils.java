@@ -16,7 +16,6 @@ public class FilterUtils {
 
     public static String getTokenFromSecurityContext() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("{}",principal);
         return principal.toString();
     }
 

@@ -18,7 +18,7 @@ public class Artifact {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private LocalDateTime created;
+    private LocalDateTime createdAt;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;

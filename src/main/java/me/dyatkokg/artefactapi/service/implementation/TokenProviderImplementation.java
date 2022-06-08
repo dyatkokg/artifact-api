@@ -2,10 +2,8 @@ package me.dyatkokg.artefactapi.service.implementation;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import me.dyatkokg.artefactapi.entity.User;
 import me.dyatkokg.artefactapi.service.TokenProvider;
 import org.springframework.beans.factory.annotation.Value;

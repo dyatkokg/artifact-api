@@ -18,15 +18,15 @@ public interface ArtifactRepository extends PagingAndSortingRepository<Artifact,
 
     Page<Artifact> findByDescriptionContains(String description, Pageable pageable);
 
-    @Query(value = "select a.id, a.artefact, a.category, a.created, a.description, u.id as user_id, u.username\n" +
+    @Query(value = "select a.id, a.artefact, a.category, a.created_at, a.description, u.id as user_id, u.username\n" +
             "from comment c \n" +
             "left join artifact a on c.artifact_id = a.id \n" +
             "left join users u on a.user_id = u.id \n" +
-            "where c.content like %:content% ",countQuery = "SELECT count(*) FROM select a.id, a.artefact, a.category, a.created, a.description, u.id as user_id, u.username\\n\" +\n" +
-            "            \"from comment c \\n\" +\n" +
-            "            \"left join artifact a on c.artifact_id = a.id \\n\" +\n" +
-            "            \"left join users u on a.user_id = u.id \\n\" +\n" +
-            "            \"where c.content like %:content%",nativeQuery = true)
-    Page<Artifact> findByCommentContains(@Param("content") String content,Pageable pageable);
+            "where c.content like %:content% ", countQuery = "SELECT count(*)\n" +
+            "           from comment c \n" +
+            "            left join artifact a on c.artifact_id = a.id \n" +
+            "            left join users u on a.user_id = u.id \n" +
+            "            where c.content like %:content%", nativeQuery = true)
+    Page<Artifact> findByCommentContains(@Param("content") String content, Pageable pageable);
 
 }

@@ -51,7 +51,7 @@ public class ArtifactServiceImplementation implements ArtefactService {
             artifact.setDescription(metadataDTO.getDescription());
         } else {
             artifact = mapper.toEntityFromMetadata(metadataDTO);
-            artifact.setCreated(LocalDateTime.now());
+            artifact.setCreatedAt(LocalDateTime.now());
             artifact.setArtefact(bytes);
             Optional<User> byId = userRepository.findById(UUID.fromString(provider.getSubject(FilterUtils.getTokenFromSecurityContext())));
             artifact.setUser(byId.orElseThrow(UserNotFoundException::new));
@@ -70,13 +70,13 @@ public class ArtifactServiceImplementation implements ArtefactService {
     }
 
     @Override
-    public Page<ArtifactDTO> searchByField(ArtifactSearchDTO searchDTO) {
+    public Page<ArtifactDTO> searchByField(int page, int size,ArtifactSearchDTO searchDTO) {
         List<ArtifactSearchDTO.OrderDTO> orderDTO = searchDTO.getOrderDTO();
         List<Sort.Order> orders = new ArrayList<>();
-        Pageable pageable = PageRequest.of(0, 100, Sort.by(orders));
         for (ArtifactSearchDTO.OrderDTO order : orderDTO) {
             orders.add(new Sort.Order(Sort.Direction.fromString(order.getDirection()), order.getField()));
         }
+        Pageable pageable = PageRequest.of(size, page, Sort.by(orders));
         if (Objects.nonNull(searchDTO.getSearch().getCategory())) {
             return repository.findByCategory(searchDTO.getSearch().getCategory(), pageable).map(mapper::toDTO);
         } else if (Objects.nonNull(searchDTO.getSearch().getUserId())) {
@@ -87,8 +87,6 @@ public class ArtifactServiceImplementation implements ArtefactService {
             return repository.findByCommentContains(searchDTO.getSearch().getComment(),pageable).map(mapper::toDTO);
         }
         return repository.findAll(pageable).map(mapper::toDTO);
-
-
     }
 
 }

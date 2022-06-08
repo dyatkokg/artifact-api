@@ -39,8 +39,10 @@ public class ArtifactController {
     }
 
     @PostMapping("find")
-    public ResponseEntity<Page<ArtifactDTO>> findBy(@RequestBody ArtifactSearchDTO searchDTO) {
-        return ResponseEntity.ok(service.searchByField(searchDTO));
+    public ResponseEntity<Page<ArtifactDTO>> findBy(@RequestParam(value = "size", required = false, defaultValue = "10") int page,
+                                                    @RequestParam(value = "page", required = false, defaultValue = "0") int size
+                                                    ,@RequestBody ArtifactSearchDTO searchDTO) {
+        return ResponseEntity.ok(service.searchByField(page, size, searchDTO));
     }
 
 

@@ -17,5 +17,5 @@ public interface ArtefactService {
 
     void deleteById(UUID id);
 
-    Page<ArtifactDTO> searchByField(ArtifactSearchDTO artefact);
+    Page<ArtifactDTO> searchByField(int page, int size, ArtifactSearchDTO artefact);
 }

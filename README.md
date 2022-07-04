@@ -8,17 +8,26 @@
 Артефакт имеет следующие поля:
 
 ID: UUID - primary key
+
 Created: DateTime - время создания
+
 UserID: String - ID пользователя
+
 Category: String - категория
+
 Description: String - описание
+
 
 Комментарий имеет следующие поля:
 
 ID: UUID - primary key
+
 ArtefactID: UUID - foreign key to artefact
+
 UserID: String - ID пользователя
+
 Content: String - комментарий
+
 
 ### Описание:
 
@@ -28,11 +37,18 @@ Content: String - комментарий
  
  * Cервис предоставляет поиск артефактов по полям:
 >категория
+
 >пользователь
+
 >описание
+
 >содержимое комментариев
+
 
  * Сортировка найденных артефактов по полям:
 >время создания
+
 >категория
+
 >пользователь
+
